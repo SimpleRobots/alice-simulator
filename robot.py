@@ -29,9 +29,11 @@ class AliceBot(object):
                    Sensor(0.14, -0.04, 2, math.radians(30), math.radians(-15)),
                    Sensor(0.12, -0.08, 2, math.radians(30), math.radians(-45))]  # ,
         # Sensor(-0.15, 0, 2, math.radians(30), math.radians(-180))]
-        initial_action = [0.2, 0]
-        self.actions = [(0.2, -2), (0.2, 0), (0.2, 2)]
-        self.action_dimension = 2
+
+        # FIXME Delete these if program still runs correctly.
+        #initial_action = [0.2, 0]
+        #self.actions = [(0.2, -2), (0.2, 0), (0.2, 2)]
+        #self.action_dimension = 2
 
         self.state_size = len(sensors)
 
