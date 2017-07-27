@@ -36,6 +36,7 @@ Install git, python, pip and python-dev.
 
 ```bash
 sudo apt-get install git python python-pip python-dev libopencv-dev python-opencv
+pip install pillow
 ```
 
 ## Install Dependencies (Windows)
@@ -54,3 +55,8 @@ http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27
 
 (64-bit)
 http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27m-win_amd64.whl
+
+Install pillow
+```bash
+pip install pillow
+```
