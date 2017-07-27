@@ -31,6 +31,8 @@ class Connection(object):
                     self.is_human = True
                 if cmd == "ai":
                     print("AI registered")
+                    if not self.is_ai:
+                        self.parent.ai_count += 1
                     self.is_ai = True
                 if cmd == "drive" and self.is_human:
                     if self.parent.ai_mode:
@@ -79,6 +81,7 @@ class HardwareNetworkAPI(object):
         self.lock = threading.Lock()
         self.alice = AliceBot(VisualisationProvider())
         self.ai_mode = True
+        self.ai_count = 0
         self.connections = []
         self.mark_for_removal = []
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -95,6 +98,8 @@ class HardwareNetworkAPI(object):
 
     def sensor_loop(self):
         while True:
+            if self.ai_count == 0:
+                sleep(1)
             action, reward = self.alice.act(self.action, 1.0 / POLL_RATE_HZ)
             measurement = self.alice.get_measurements()
             self.send_all("sense " + " ".join(('%.2f' % x) for x in measurement))
@@ -112,6 +117,8 @@ class HardwareNetworkAPI(object):
 
     def disconnected(self, conn):
         self.mark_for_removal.append(conn)
+        if conn.is_ai:
+            self.ai_count -= 1
 
     def send_all(self, msg):
         self.lock.acquire()
