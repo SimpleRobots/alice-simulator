@@ -35,12 +35,7 @@ sudo apt-get upgrade
 Install git, python, pip and python-dev.
 
 ```bash
-sudo apt-get install git python python-pip python-dev
-```
-
-Install dependencies by running the install_deps.py in the commandline.
-```bash
-python install_deps.py
+sudo apt-get install git python python-pip python-dev libopencv-dev python-opencv
 ```
 
 ## Install Dependencies (Windows)
@@ -53,7 +48,9 @@ Download and install git.
 
 https://git-scm.com/
 
-Install dependencies by running the install_deps.py in the commandline.
-```bash
-python install_deps.py
-```
+Download and install opencv for python.
+(32-bit)
+http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27m-win32.whl
+
+(64-bit)
+http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27m-win_amd64.whl
