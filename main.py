@@ -103,6 +103,10 @@ class HardwareNetworkAPI(object):
             action, reward = self.alice.act(self.action, 1.0 / POLL_RATE_HZ)
             measurement = self.alice.get_measurements()
             self.send_all("sense " + " ".join(('%.2f' % x) for x in measurement))
+            local_pos = self.alice.robot.get_local_position()
+            global_pos = self.alice.robot.get_global_position()
+            self.send_all("gps %.7f %.7f 0 %.3f 0 %.3f 0" % global_pos)
+            self.send_all("pos %.3f %.3f %.3f %.3f" % local_pos)
             if reward < 0:
                 self.alice.reset()
                 self.send_all_ais("reward {}".format(reward))

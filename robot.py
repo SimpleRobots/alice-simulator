@@ -20,6 +20,17 @@ class Robot(object):
         self.y = y
         self.heading = heading
         self.sensors = sensors
+        self.accuracy = 0.01 # 1cm precision
+
+    def get_local_position(self):
+        return (self.x, self.y, self.heading, self.accuracy)
+
+    def get_global_position(self):
+        x, y, heading, accuracy = self.get_local_position()
+        lat = x # TODO How?
+        lon = y # TODO How?
+        gps_accuracy = 0.1 # 10 cm precision
+        return (lat, lon, -heading, gps_accuracy) # Lat, Lon, Heading to North
 
 
 class AliceBot(object):
