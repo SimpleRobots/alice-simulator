@@ -3,7 +3,7 @@ A standalone simulator for alice that behaves like a hardware robot.
 
 ## Run
 
-(First install dependencies see below)
+**First install dependencies see below**
 
 Clone the repository.
 ```bash
@@ -18,9 +18,14 @@ In the bash go to the directory where you cloned alice-simulator.
 
 ### Windows
 
-In the bash inside the folder where you cloned alice-simulator run the bat script.
+Run the simulate_with_vis_python36.bat (for example by double clicking it).
 ```bash
-simulate_with_vis.bat
+simulate_with_vis_python36.bat
+```
+
+Or if you chose tu install python27...
+```bash
+simulate_with_vis_python27.bat
 ```
 
 ## Install Dependencies (Ubuntu)
@@ -41,7 +46,7 @@ pip install pillow scipy
 
 ## Install Dependencies (Windows)
 
-Download and install the most recent version of anaconda python for windows. (Python2.7 and Python3.x should both be fine)
+Download and install the most recent version of anaconda python37 for windows. (Python27 works too.)
 
 https://www.continuum.io/downloads#windows
 
@@ -49,14 +54,18 @@ Download and install git.
 
 https://git-scm.com/
 
-Download and install opencv for python.
-(32-bit)
-http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27m-win32.whl
+Download opencv for python and copy the whl into the home folder.
 
-(64-bit)
-http://www.lfd.uci.edu/~gohlke/pythonlibs/ru4fxw3r/opencv_python-3.1.0-cp27-cp27m-win_amd64.whl
+(python27) http://www.lfd.uci.edu/~gohlke/pythonlibs/tuft5p8b/opencv_python-3.1.0-cp27-cp27m-win_amd64.whl
 
-Install pillow
+(python36) http://www.lfd.uci.edu/~gohlke/pythonlibs/tuft5p8b/opencv_python-3.3.0+contrib-cp36-cp36m-win_amd64.whl
+
+Now install all the dependencies automatically.
 ```bash
-pip install pillow scipy
+install_python36.bat
+```
+
+If you want to stick with python27 for some reason use this instead.
+```bash
+install_python27.bat
 ```
