@@ -58,7 +58,7 @@ class VisualisationProvider(object):
             remove = []
             for x in self.observers:
                 try:
-                    x.send(data + "\n")
+                    x.send((data + "\n").encode("utf-8"))
                 except:
                     print("observer disconnected")
                     remove.append(x)

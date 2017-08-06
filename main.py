@@ -54,23 +54,23 @@ class Connection(object):
 
     def send(self, msg):
         try:
-            self.sock.send(msg + "\n")
+            self.sock.send((msg + "\n").encode("utf-8"))
         except:
             print("Human disconnected")
             self.parent.disconnected(self)
-    
+
     def send_to_human(self, msg):
         if self.is_human:
             try:
-                self.sock.send(msg + "\n")
+                self.sock.send((msg + "\n").encode("utf-8"))
             except:
                 print("Human disconnected")
                 self.parent.disconnected(self)
-    
+
     def send_to_ai(self, msg):
         if self.is_ai:
             try:
-                self.sock.send(msg + "\n")
+                self.sock.send((msg + "\n").encode("utf-8"))
             except:
                 print("AI disconnected")
                 self.parent.disconnected(self)
