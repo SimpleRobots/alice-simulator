@@ -21,14 +21,19 @@ class Robot(object):
         self.heading = heading
         self.sensors = sensors
         self.accuracy = 0.01 # 1cm precision
+        self.ref_lat = 49.02356
+        self.ref_lon = 8.43168
+        self.r_earth = 6378000
 
     def get_local_position(self):
         return (self.x, self.y, self.heading, self.accuracy)
 
     def get_global_position(self):
         x, y, heading, accuracy = self.get_local_position()
-        lat = x # TODO How?
-        lon = y # TODO How?
+
+        lat = self.ref_lat + (y / r_earth) * (180.0 / math.pi);
+        lon = self.ref_lon + (x / r_earth) * (180.0 / math.pi) / cos(self.ref_lat * math.pi / 180.0);
+
         gps_accuracy = 0.1 # 10 cm precision
         return (lat, lon, -heading, gps_accuracy) # Lat, Lon, Heading to North
 
