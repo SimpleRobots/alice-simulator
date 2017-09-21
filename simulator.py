@@ -2,6 +2,11 @@ from scipy import misc
 import math
 
 
+RED = 0
+GREEN = 1
+BLUE = 2
+
+
 class Simulator(object):
     def __init__(self, small=False):
         if small:
@@ -69,7 +74,7 @@ class Simulator(object):
                 ix = int(x * self.pixels_per_meter)
                 iy = int(y * self.pixels_per_meter)
                 if 0 <= ix < self.map_width and 0 <= iy < self.map_height:
-                    if self.map[self.map_height - iy - 1][ix][0] < 10 and dist < min_val:
+                    if self.map[self.map_height - iy - 1][ix][RED] < 10 and self.map[self.map_height - iy - 1][ix][GREEN] < 10 and self.map[self.map_height - iy - 1][ix][BLUE] < 10 and dist < min_val:
                         min_val = dist
                         break
 
