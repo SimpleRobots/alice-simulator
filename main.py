@@ -1,6 +1,7 @@
 from time import sleep
 import socket
 import threading
+import multiprocessing
 import sys
 from robot import AliceBot
 from visualisation import VisualisationProvider, NetworkRenderer
@@ -158,14 +159,16 @@ def visualisation():
 
 def main():
     api = HardwareNetworkAPI()
+    t = None
     if len(sys.argv) > 1 and sys.argv[1] == "visualisation":
-        t = threading.Thread(target=visualisation)
-        t.daemon = True
+        t = multiprocessing.Process(target=visualisation)
         t.start()
     try:
         api.sensor_loop()
     except:
         print("Stopping...")
+    if t is not None:
+        t.terminate()
 
 if __name__ == "__main__":
     main()
