@@ -5,6 +5,9 @@ MAX_SPEED_LEFT = 0.1142 * 2
 MAX_SPEED_RIGHT = 0.1142 * 2
 WHEELBASE = 0.2
 
+RADIUS_EARTH = 6378000
+
+
 class Sensor(object):
     def __init__(self, x, y, max_range, cone_width, heading):
         self.x = x
@@ -15,15 +18,14 @@ class Sensor(object):
 
 
 class Robot(object):
-    def __init__(self, x, y, heading, sensors):
+    def __init__(self, x, y, heading, sensors, reference_lat=49.02356, reference_lon=8.43168):
         self.x = x
         self.y = y
         self.heading = heading
         self.sensors = sensors
         self.accuracy = 0.01 # 1cm precision
-        self.ref_lat = 49.02356
-        self.ref_lon = 8.43168
-        self.r_earth = 6378000
+        self.ref_lat = reference_lat
+        self.ref_lon = reference_lon
 
     def get_local_position(self):
         return (self.x, self.y, self.heading, self.accuracy)
@@ -31,8 +33,8 @@ class Robot(object):
     def get_global_position(self):
         x, y, heading, accuracy = self.get_local_position()
 
-        lat = self.ref_lat + (y / r_earth) * (180.0 / math.pi);
-        lon = self.ref_lon + (x / r_earth) * (180.0 / math.pi) / cos(self.ref_lat * math.pi / 180.0);
+        lat = self.ref_lat + (y / RADIUS_EARTH) * (180.0 / math.pi)
+        lon = self.ref_lon + (x / RADIUS_EARTH) * (180.0 / math.pi) / math.cos(self.ref_lat * math.pi / 180.0)
 
         gps_accuracy = 0.1 # 10 cm precision
         return (lat, lon, -heading, gps_accuracy) # Lat, Lon, Heading to North
