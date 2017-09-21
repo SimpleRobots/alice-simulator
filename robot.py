@@ -37,7 +37,7 @@ class Robot(object):
         lon = self.ref_lon + (x / RADIUS_EARTH) * (180.0 / math.pi) / math.cos(self.ref_lat * math.pi / 180.0)
 
         gps_accuracy = 0.1 # 10 cm precision
-        return (lat, lon, -heading, gps_accuracy) # Lat, Lon, Heading to North
+        return (lat, lon, -heading + math.pi/2, gps_accuracy) # Lat, Lon, Heading to North
 
 
 class AliceBot(object):
