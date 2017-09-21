@@ -8,15 +8,15 @@ BLUE = 2
 
 
 class Simulator(object):
-    def __init__(self, small=False):
+    def __init__(self, small=False, map_name="data/map"):
         if small:
             self.simulation_steps_per_meter = 10
-            self.map = misc.imread('data/map_small.png')
+            self.map = misc.imread(map_name + '_small.png')
             self.pixels_per_meter = 10
             self.simulation_steps_per_radian = 1.0 / math.radians(4)
         else:
             self.simulation_steps_per_meter = 100
-            self.map = misc.imread('data/map.png')
+            self.map = misc.imread(map_name + '.png')
             self.pixels_per_meter = 100
             self.simulation_steps_per_radian = 1.0 / math.radians(9)
         self.map_height, self.map_width, self.colors = self.map.shape

@@ -41,7 +41,7 @@ class Robot(object):
 
 
 class AliceBot(object):
-    def __init__(self, visualisation):
+    def __init__(self, visualisation, small=None, map_name=None):
         sensors = [Sensor(0.12, 0.08, 2, math.radians(30), math.radians(45)),
                    Sensor(0.14, 0.04, 2, math.radians(30), math.radians(15)),
                    Sensor(0.14, -0.04, 2, math.radians(30), math.radians(-15)),
@@ -60,7 +60,14 @@ class AliceBot(object):
         x = 1
         y = 1
         heading = 0
-        self.environment = simulator.Simulator()
+        if map_name is None and small is None:
+            self.environment = simulator.Simulator()
+        elif map_name is None:
+            self.environment = simulator.Simulator(small=small)
+        elif small is None:
+            self.environment = simulator.Simulator(map_name=map_name)
+        else:
+            self.environment = simulator.Simulator(small=small, map_name=map_name)
 
         self.robot = Robot(x, y, heading, sensors)
         self.wheel_distance = WHEELBASE
