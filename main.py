@@ -160,7 +160,7 @@ def visualisation():
 def main():
     api = HardwareNetworkAPI()
     t = None
-    if len(sys.argv) > 1 and sys.argv[1] == "visualisation":
+    if len(sys.argv) > 1 and (sys.argv[1] == "visualisation" or sys.argv[1] == "visualization"):
         t = multiprocessing.Process(target=visualisation)
         t.start()
     try:
