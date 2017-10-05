@@ -7,7 +7,7 @@ A standalone simulator for alice that behaves like a hardware robot.
 
 Clone the repository.
 ```bash
-git clone git@github.com:penguinmenac3/alice-simulator.git
+git clone https://github.com/penguinmenac3/alice-simulator.git
 ```
 
 ### Linux
@@ -41,8 +41,13 @@ Install git, python, pip and python-dev.
 
 ```bash
 sudo apt-get install git python python-pip python-dev libopencv-dev python-opencv
+```
+
+```bash
 pip install pillow scipy
 ```
+
+If the pip install fails you may need to rerun it using sudo.
 
 ## Install Dependencies (Windows)
 
