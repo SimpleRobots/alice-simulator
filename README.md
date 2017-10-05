@@ -23,7 +23,7 @@ Run the simulate_with_vis_python36.bat (for example by double clicking it).
 simulate_with_vis_python36.bat
 ```
 
-Or if you chose tu install python27...
+Or if you chose to install python27...
 ```bash
 simulate_with_vis_python27.bat
 ```
