@@ -26,13 +26,16 @@ class Robot(object):
         self.x = x
         self.y = y
         self.heading = heading
+        self.predicted_x = x
+        self.predicted_y = y
+        self.predicted_heading = heading
         self.sensors = sensors
         self.accuracy = 0.01 # 1cm precision
         self.ref_lat = reference_lat
         self.ref_lon = reference_lon
 
     def get_local_position(self):
-        return (self.x, self.y, self.heading, self.accuracy)
+        return (self.predicted_x, self.predicted_y, self.predicted_heading, self.accuracy)
 
     def get_global_position(self):
         x, y, heading, accuracy = self.get_local_position()
@@ -99,6 +102,8 @@ class AliceBot(object):
 
     def act(self, action, dt=0.1):
         action = self.environment.action(action)
+
+        # Calculate true motion (with bias)
         v_left = BIAS_RIGHT * max(-MAX_SPEED_LEFT, min(MAX_SPEED_LEFT, action[0]))
         v_right = BIAS_LEFT * max(-MAX_SPEED_RIGHT, min(MAX_SPEED_RIGHT, action[1]))
 
@@ -115,6 +120,24 @@ class AliceBot(object):
             self.robot.heading -= 2 * math.pi
         while self.robot.heading <= -math.pi:
             self.robot.heading += 2 * math.pi
+
+        # Calculate predicted motion
+        v_left = max(-MAX_SPEED_LEFT, min(MAX_SPEED_LEFT, action[0]))
+        v_right = max(-MAX_SPEED_RIGHT, min(MAX_SPEED_RIGHT, action[1]))
+
+        v_avg = 1.0 / 2.0 * (v_left + v_right)
+        dx = math.cos(self.robot.heading) * v_avg
+        dy = math.sin(self.robot.heading) * v_avg
+        dtheta = 1.0 / self.wheel_distance * (v_right - v_left)
+
+        self.robot.predicted_x += dx * dt
+        self.robot.predicted_y += dy * dt
+        self.robot.predicted_heading += dtheta * dt
+
+        while self.robot.predicted_heading > math.pi:
+            self.robot.predicted_heading -= 2 * math.pi
+        while self.robot.predicted_heading <= -math.pi:
+            self.robot.predicted_heading += 2 * math.pi
 
         self.visualisation.broadcast(self)
 
