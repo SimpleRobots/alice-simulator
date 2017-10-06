@@ -5,6 +5,10 @@ MAX_SPEED_LEFT = 0.1142 * 2
 MAX_SPEED_RIGHT = 0.1142 * 2
 WHEELBASE = 0.2
 
+# wheel velocities are multiplied with this factor to introduce a systematic error
+BIAS_RIGHT = 1.02
+BIAS_LEFT = 0.99
+
 RADIUS_EARTH = 6378000
 
 
@@ -95,8 +99,8 @@ class AliceBot(object):
 
     def act(self, action, dt=0.1):
         action = self.environment.action(action)
-        v_left = max(-MAX_SPEED_LEFT, min(MAX_SPEED_LEFT, action[0]))
-        v_right = max(-MAX_SPEED_RIGHT, min(MAX_SPEED_RIGHT, action[1]))
+        v_left = BIAS_RIGHT * max(-MAX_SPEED_LEFT, min(MAX_SPEED_LEFT, action[0]))
+        v_right = BIAS_LEFT * max(-MAX_SPEED_RIGHT, min(MAX_SPEED_RIGHT, action[1]))
 
         v_avg = 1.0 / 2.0 * (v_left + v_right)
         dx = math.cos(self.robot.heading) * v_avg
