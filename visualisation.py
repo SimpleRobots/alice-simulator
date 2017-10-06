@@ -75,6 +75,7 @@ class NetworkRenderer(object):
         self.img = None
         self.scale = 100
         self.height, self.width, self.colors = self.bg.shape
+        self.trajectory = []
         self.network_read()
 
     def clear(self):
@@ -104,8 +105,13 @@ class NetworkRenderer(object):
             rx = data["robot_x"]
             ry = data["robot_y"]
             rt = data["robot_heading"]
+            self.trajectory.append((rx, ry))
             polygons = data["polygons"]
             self.clear()
+            for i in range(len(self.trajectory) - 1):
+                p1x, p1y = self.trajectory[i]
+                p2x, p2y = self.trajectory[i+1]
+                self.draw_line(p1x, p1y, p2x, p2y, (0, 0, 200), 2)
             self.draw_circle(rx, ry, 0.15, (50, 0, 200))
             self.draw_line(rx, ry, rx + math.cos(rt), ry + math.sin(rt), (30, 30, 30), 3)
             for poly in polygons:
