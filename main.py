@@ -50,6 +50,10 @@ class Connection(object):
                 if cmd == "ai_mode" and self.is_human:
                     print("Handing over to ai")
                     self.parent.ai_mode = True
+                if cmd == "led":
+                    led_id = int(parts[1])
+                    led_state = parts[2] == "True"
+                    self.parent.alice.robot.set_led(led_id, led_state)
             except:
                 break
 

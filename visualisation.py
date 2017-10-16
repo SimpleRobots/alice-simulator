@@ -54,6 +54,7 @@ class VisualisationProvider(object):
             meta_data["robot_y"] = robot_y
             meta_data["robot_heading"] = robot_heading
             meta_data["polygons"] = polygons
+            meta_data["leds"] = bot.robot.leds
             data = json.dumps(meta_data)
             remove = []
             for x in self.observers:
@@ -112,10 +113,17 @@ class NetworkRenderer(object):
                 p1x, p1y = self.trajectory[i]
                 p2x, p2y = self.trajectory[i+1]
                 self.draw_line(p1x, p1y, p2x, p2y, (0, 0, 200), 2)
-            self.draw_circle(rx, ry, 0.15, (50, 0, 200))
+            self.draw_circle(rx, ry, 0.15, (131, 191, 230))
             self.draw_line(rx, ry, rx + math.cos(rt), ry + math.sin(rt), (30, 30, 30), 3)
             for poly in polygons:
                 self.draw_polygon(poly, (200, 100, 100))
+
+            for i in range(len(data["leds"])):
+                color = (0, 100, 30)
+                if data["leds"][i]:
+                    color = (50, 250, 170)
+                self.draw_circle(rx - 0.075/2.0 + i* 0.075, ry + 0.075, 0.03, color)
+
             cv2.imshow("Alice Bot", self.img)
             cv2.waitKey(1)
 

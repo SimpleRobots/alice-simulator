@@ -22,7 +22,7 @@ class Sensor(object):
 
 
 class Robot(object):
-    def __init__(self, x, y, heading, sensors, reference_lat=49.02356, reference_lon=8.43168):
+    def __init__(self, x, y, heading, sensors, leds, reference_lat=49.02356, reference_lon=8.43168):
         self.x = x
         self.y = y
         self.heading = heading
@@ -30,6 +30,7 @@ class Robot(object):
         self.predicted_y = y
         self.predicted_heading = heading
         self.sensors = sensors
+        self.leds = leds
         self.accuracy = 0.01 # 1cm precision
         self.ref_lat = reference_lat
         self.ref_lon = reference_lon
@@ -45,6 +46,9 @@ class Robot(object):
 
         gps_accuracy = 0.1 # 10 cm precision
         return (lat, lon, -heading + math.pi/2, gps_accuracy) # Lat, Lon, Heading to North
+
+    def set_led(self, led_id, led_state):
+        self.leds[led_id] = led_state
 
 
 class AliceBot(object):
@@ -76,7 +80,7 @@ class AliceBot(object):
         else:
             self.environment = simulator.Simulator(small=small, map_name=map_name)
 
-        self.robot = Robot(x, y, heading, sensors)
+        self.robot = Robot(x, y, heading, sensors, leds=[False, False])
         self.wheel_distance = WHEELBASE
         self.size = 0.15
 
