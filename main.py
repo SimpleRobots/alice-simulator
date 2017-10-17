@@ -6,6 +6,7 @@ import sys
 from robot import AliceBot
 from visualisation import VisualisationProvider, NetworkRenderer
 
+
 HOST = "0.0.0.0"
 PORT = 2323
 POLL_RATE_HZ = 10
@@ -164,7 +165,9 @@ def visualisation():
 def main():
     api = HardwareNetworkAPI()
     t = None
-    if len(sys.argv) > 1 and (sys.argv[1] == "visualisation" or sys.argv[1] == "visualization"):
+    if len(sys.argv) > 1 and (sys.argv[1] == "no-visualisation" or sys.argv[1] == "no-visualization"):
+        print("Visualization disabled.")
+    else:
         t = multiprocessing.Process(target=visualisation)
         t.start()
     try:
