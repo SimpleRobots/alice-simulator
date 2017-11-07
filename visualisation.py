@@ -112,9 +112,11 @@ class NetworkRenderer(object):
             for i in range(len(self.trajectory) - 1):
                 p1x, p1y = self.trajectory[i]
                 p2x, p2y = self.trajectory[i+1]
-                self.draw_line(p1x, p1y, p2x, p2y, (0, 0, 200), 2)
+                if abs(p1x - p2x) > 0.1 or abs(p1y -p2y) > 0.1:
+                  continue
+                self.draw_line(p1x, p1y, p2x, p2y, (0, 0, 150), 2)
             self.draw_circle(rx, ry, 0.15, (131, 191, 230))
-            self.draw_line(rx, ry, rx + math.cos(rt), ry + math.sin(rt), (30, 30, 30), 3)
+            self.draw_line(rx, ry, rx + math.cos(rt) * 0.15, ry + math.sin(rt) * 0.15, (30, 30, 30), 2)
             for poly in polygons:
                 self.draw_polygon(poly, (200, 100, 100))
 
@@ -122,7 +124,9 @@ class NetworkRenderer(object):
                 color = (0, 100, 30)
                 if data["leds"][i]:
                     color = (50, 250, 170)
-                self.draw_circle(rx - 0.075/2.0 + i* 0.075, ry + 0.075, 0.03, color)
+                x_off = - 0.075/2.0 + i*0.075
+                y_off = 0.075
+                self.draw_circle(rx + x_off * math.cos(rt) - y_off * math.sin(rt), ry + x_off * math.sin(rt) + y_off * math.cos(rt), 0.03, color)
 
             cv2.imshow("Alice Bot", self.img)
             cv2.waitKey(1)
