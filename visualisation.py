@@ -128,7 +128,7 @@ class NetworkRenderer(object):
                 y_off = 0.075
                 self.draw_circle(rx + x_off * math.cos(rt) - y_off * math.sin(rt), ry + x_off * math.sin(rt) + y_off * math.cos(rt), 0.03, color)
 
-            cv2.imshow("Alice Bot", self.img)
+            cv2.imshow("Open Bot", self.img)
             cv2.waitKey(1)
 
 
@@ -144,8 +144,9 @@ def main():
             break
         except:
             time.sleep(1)
-            cv2.imshow("Alice Bot", bg)
+            cv2.imshow("Open Bot", bg)
             cv2.waitKey(1)
+
 
 if __name__ == "__main__":
     main()

@@ -52,11 +52,12 @@ class Robot(object):
 
 
 class AliceBot(object):
-    def __init__(self, visualisation, small=None, map_name=None):
-        sensors = [Sensor(0.12, 0.08, 2, math.radians(30), math.radians(45)),
-                   Sensor(0.14, 0.04, 2, math.radians(30), math.radians(15)),
-                   Sensor(0.14, -0.04, 2, math.radians(30), math.radians(-15)),
-                   Sensor(0.12, -0.08, 2, math.radians(30), math.radians(-45))]  # ,
+    def __init__(self, visualisation, small=None, map_name=None, sensors=None):
+        if sensors is None:
+            sensors = [Sensor(0.12, 0.08, 2, math.radians(30), math.radians(45)),
+                       Sensor(0.14, 0.04, 2, math.radians(30), math.radians(15)),
+                       Sensor(0.14, -0.04, 2, math.radians(30), math.radians(-15)),
+                       Sensor(0.12, -0.08, 2, math.radians(30), math.radians(-45))]  # ,
         # Sensor(-0.15, 0, 2, math.radians(30), math.radians(-180))]
 
         # FIXME Delete these if program still runs correctly.
@@ -146,3 +147,8 @@ class AliceBot(object):
         self.visualisation.broadcast(self)
 
         return action, self.environment.reward(self.robot, self.size, -100, 1)
+
+
+class EveBot(AliceBot):
+    def __init__(self, visualisation, small=None, map_name=None):
+        super(EveBot, self).__init__(visualisation, small, map_name, [Sensor(0.15, 0, 2, math.radians(30), 0)])

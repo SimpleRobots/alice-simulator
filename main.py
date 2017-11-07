@@ -3,13 +3,14 @@ import socket
 import threading
 import multiprocessing
 import sys
-from robot import AliceBot
+from robot import AliceBot, EveBot
 from visualisation import VisualisationProvider, NetworkRenderer
 
 
 HOST = "0.0.0.0"
 PORT = 2323
 POLL_RATE_HZ = 10
+
 
 class Connection(object):
     def __init__(self, socket, parent):
@@ -83,9 +84,15 @@ class Connection(object):
 
 
 class HardwareNetworkAPI(object):
-    def __init__(self):
+    def __init__(self, robot):
         self.lock = threading.Lock()
-        self.alice = AliceBot(VisualisationProvider())
+        self.alice = None
+        if robot == "alice":
+            self.alice = AliceBot(VisualisationProvider())
+        elif robot == "eve":
+            self.alice = EveBot(VisualisationProvider())
+        else:
+            raise NotImplementedError("No implementation for robot %s found." % robot)
         self.ai_mode = True
         self.ai_count = 0
         self.connections = []
@@ -163,9 +170,12 @@ def visualisation():
 
 
 def main():
-    api = HardwareNetworkAPI()
+    robot = "alice"
+    if "eve" in sys.argv:
+        robot = "eve"
+    api = HardwareNetworkAPI(robot=robot)
     t = None
-    if len(sys.argv) > 1 and (sys.argv[1] == "no-visualisation" or sys.argv[1] == "no-visualization"):
+    if "no-visualisation" in sys.argv or "no-visualization" in sys.argv:
         print("Visualization disabled.")
     else:
         t = multiprocessing.Process(target=visualisation)
@@ -176,6 +186,7 @@ def main():
         print("Stopping...")
     if t is not None:
         t.terminate()
+
 
 if __name__ == "__main__":
     main()
