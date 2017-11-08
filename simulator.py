@@ -1,5 +1,8 @@
 from scipy import misc
 import math
+from data.simple_room import LINES
+from data.render import render
+from Raycaster import Raycaster
 
 
 RED = 0
@@ -8,18 +11,13 @@ BLUE = 2
 
 
 class Simulator(object):
-    def __init__(self, small=False, map_name="data/map"):
-        if small:
-            self.simulation_steps_per_meter = 10
-            self.map = misc.imread(map_name + '_small.png')
-            self.pixels_per_meter = 10
-            self.simulation_steps_per_radian = 1.0 / math.radians(4)
-        else:
-            self.simulation_steps_per_meter = 100
-            self.map = misc.imread(map_name + '.png')
-            self.pixels_per_meter = 100
-            self.simulation_steps_per_radian = 1.0 / math.radians(9)
+    def __init__(self):
+        self.simulation_steps_per_meter = 100
+        self.map = render(LINES)
+        self.pixels_per_meter = 100
+        self.simulation_steps_per_radian = 1.0 / math.radians(9)
         self.map_height, self.map_width, self.colors = self.map.shape
+        self.raycaster = Raycaster(LINES, max(self.map_height, self.map_width))
 
     def reward(self, robot, robot_size, collison_reward, step_reward):
         x = robot.x
@@ -60,22 +58,11 @@ class Simulator(object):
 
         for alpha in range(angle_steps):
             angle = robot.heading + sensor.heading + relative_angle + (alpha - int(angle_steps / 2.0)) / self.simulation_steps_per_radian
-            dx = math.cos(angle)
-            dy = math.sin(angle)
 
-            for i in range(sensor.max_range * self.simulation_steps_per_meter):
-                dist = i / float(self.simulation_steps_per_meter)
-                if dist > min_val:
-                    break
-
-                x = robot.x + math.cos(robot.heading) * sensor.x - math.sin(robot.heading) * sensor.y + dx * i / float(self.simulation_steps_per_meter)
-                y = robot.y + math.sin(robot.heading) * sensor.x + math.cos(robot.heading) * sensor.y + dy * i / float(self.simulation_steps_per_meter)
-
-                ix = int(x * self.pixels_per_meter)
-                iy = int(y * self.pixels_per_meter)
-                if 0 <= ix < self.map_width and 0 <= iy < self.map_height:
-                    if self.map[self.map_height - iy - 1][ix][RED] < 10 and self.map[self.map_height - iy - 1][ix][GREEN] < 10 and self.map[self.map_height - iy - 1][ix][BLUE] < 10 and dist < min_val:
-                        min_val = dist
-                        break
+            p = self.raycaster.cast((robot.x, robot.y, angle))
+            dx = p[0] - robot.x
+            dy = p[1] - robot.y
+            dist = math.sqrt(dx * dx + dy * dy)
+            min_val = min(min_val, dist)
 
         return sensor.max_range if min_val == sensor.max_range else min_val

@@ -6,6 +6,8 @@ import json
 import math
 import sys
 import threading
+from data.simple_room import LINES
+from data.render import render
 
 
 class VisualisationProvider(object):
@@ -72,7 +74,7 @@ class NetworkRenderer(object):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, 25555))
         self.fsock = self.sock.makefile()
-        self.bg = cv2.imread("data/map.png")
+        self.bg = render(LINES)
         self.img = None
         self.scale = 100
         self.height, self.width, self.colors = self.bg.shape
@@ -136,7 +138,7 @@ def main():
     """
     The main function of the program.
     """
-    bg = cv2.imread("data/map.png")
+    bg = render(LINES)
     while True:
         try:
             NetworkRenderer(sys.argv[1])
