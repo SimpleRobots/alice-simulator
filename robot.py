@@ -39,13 +39,11 @@ class Robot(object):
         return (self.predicted_x, self.predicted_y, self.predicted_heading, self.accuracy)
 
     def get_global_position(self):
-        x, y, heading, accuracy = self.get_local_position()
-
-        lat = self.ref_lat + (y / RADIUS_EARTH) * (180.0 / math.pi)
-        lon = self.ref_lon + (x / RADIUS_EARTH) * (180.0 / math.pi) / math.cos(self.ref_lat * math.pi / 180.0)
+        lat = self.ref_lat + (self.y / RADIUS_EARTH) * (180.0 / math.pi)
+        lon = self.ref_lon + (self.x / RADIUS_EARTH) * (180.0 / math.pi) / math.cos(self.ref_lat * math.pi / 180.0)
 
         gps_accuracy = 0.1 # 10 cm precision
-        return (lat, lon, -heading + math.pi/2, gps_accuracy) # Lat, Lon, Heading to North
+        return (lat, lon, -self.heading + math.pi/2, gps_accuracy) # Lat, Lon, Heading to North
 
     def set_led(self, led_id, led_state):
         self.leds[led_id] = led_state
@@ -99,11 +97,17 @@ class AliceBot(object):
 
     def reset(self):
         self.set_pose(1, 1, 0)
+        self.set_predicted_pose(1, 1, 0)
 
     def set_pose(self, x, y, heading):
         self.robot.x = x
         self.robot.y = y
         self.robot.heading = heading
+
+    def set_predicted_pose(self, x, y, heading):
+        self.robot.predicted_x = x
+        self.robot.predicted_y = y
+        self.robot.predicted_heading = heading
 
     def act(self, action, dt=0.1):
         action = self.environment.action(action)
